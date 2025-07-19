@@ -1,5 +1,5 @@
 export default function Library() {
     return (
-        <div></div>
+        <div className="library flex"></div>
     );
 }
