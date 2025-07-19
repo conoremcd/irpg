@@ -11,14 +11,13 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger
+} from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -69,7 +68,28 @@ export default function RootLayout({
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>profile picture</AvatarFallback>
                   </Avatar>
-                  <Menubar></Menubar>
+                  <NavigationMenu>
+                    <NavigationMenuList>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger>Library</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <NavigationMenuLink>Link</NavigationMenuLink>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger>Characters</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <NavigationMenuLink>Link</NavigationMenuLink>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                      <NavigationMenuItem>
+                        <NavigationMenuTrigger>Assets</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <NavigationMenuLink>Link</NavigationMenuLink>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    </NavigationMenuList>
+                  </NavigationMenu>
                 </>
 
               }
