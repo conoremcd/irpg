@@ -1,4 +1,4 @@
-export default interface UserImage {
+export interface UserImage {
     src: string;
     alt: string;
     width: number;

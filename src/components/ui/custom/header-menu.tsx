@@ -1,22 +1,26 @@
 "use client";
-// 
+
+// interfaces
 import MenuItem from "@/interfaces/menu-item";
+
+// library components
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
+    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
-    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarRail,
-    SidebarTrigger,
-    useSidebar
-} from "../shadcn/sidebar";
-import { Separator } from "../shadcn/separator";
+} from "@/components/ui/shadcn/sidebar";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+// icons
 import {
     BookUser,
     House,
@@ -26,17 +30,16 @@ import {
     Settings,
     SidebarClose,
 } from "lucide-react";
-import Link from "next/link";
-import HeaderProfile from "@/components/ui/custom/header-logo";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "../shadcn/breadcrumb";
-import FooterProfile from "./footer-profile";
+
+// custom components
+import FooterProfile from "@/components/ui/custom/footer-profile";
 import HeaderLogo from "@/components/ui/custom/header-logo";
 
-// Menu items.
+// menu items
 const menuItems: MenuItem[] = [
     {
         title: "Dashboard",
-        url: "/#",
+        url: "/",
         icon: House,
     },
     {
@@ -71,44 +74,38 @@ export default function HeaderMenu({
 }: Readonly<{
     authUserId?: number;
 }>) {
-    const {
-        state,
-        open,
-        setOpen,
-        openMobile,
-        setOpenMobile,
-        isMobile,
-        toggleSidebar,
-    } = useSidebar();
+
+    const pathName = usePathname();
     return (
-        <Sidebar className="p-0" variant="sidebar" collapsible="icon">
-            <SidebarHeader>
-                <HeaderLogo authUserId={authUserId}></HeaderLogo>
-            </SidebarHeader>
-            <Separator />
-            <SidebarContent>
-                <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {menuItems && menuItems.length > 0 && menuItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                    <SidebarMenuAction className="peer-data-[active=true]/menu-button:opacity-100"></SidebarMenuAction>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
-            <SidebarFooter className="flex flex-col">
-                <FooterProfile></FooterProfile>
-            </SidebarFooter>
-            <SidebarRail></SidebarRail>
-        </Sidebar>
+        <header className="header">
+            <Sidebar variant="sidebar" collapsible="icon">
+                <SidebarHeader className="flex flex-row justify-end-safe bg-(--sidebar-primary)">
+                    <HeaderLogo authUserId={authUserId}></HeaderLogo>
+                </SidebarHeader>
+                <SidebarContent>
+                    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                        <SidebarGroupLabel>Improv RPG</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {menuItems && menuItems.length > 0 && menuItems.map((item) => (
+                                    <SidebarMenuItem key={item.title}>
+                                        <SidebarMenuButton asChild isActive={pathName === item.url}>
+                                            <Link href={item.url}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                ))}
+                            </SidebarMenu>
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                </SidebarContent>
+                <SidebarFooter className="flex flex-col bg-(--sidebar-accent)">
+                    <FooterProfile></FooterProfile>
+                </SidebarFooter>
+                <SidebarRail />
+            </Sidebar>
+        </header>
     );
 }

@@ -2,11 +2,11 @@
 
 // UI components 
 import {
-    Avatar, 
-    AvatarFallback, 
-    AvatarImage 
+    Avatar,
+    AvatarFallback,
+    AvatarImage
 } from "@/components/ui/shadcn/avatar";
-import { Button } from "@/components/ui/shadcn/button";
+import Link from "next/link";
 
 // Icons
 import { UserRound } from "lucide-react";
@@ -16,17 +16,21 @@ export default function FooterProfile({
 }: Readonly<{
     authUserId?: number;
 }>) {
-
+    const profileLink = {
+        url: "/profile",
+    }
     return (
-        <Button variant="ghost" size="icon">
-            <Avatar>
-                {authUserId &&
-                    <AvatarImage></AvatarImage>
-                }
-                <AvatarFallback>
+        <Avatar>
+            {authUserId &&
+                <AvatarImage>
+                    <Link href={profileLink.url} />
+                </AvatarImage>
+            }
+            <AvatarFallback>
+                <Link href={profileLink.url}>
                     <UserRound />
-                </AvatarFallback>
-            </Avatar>
-        </Button>
+                </Link>
+            </AvatarFallback>
+        </Avatar>
     );
 }
