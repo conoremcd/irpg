@@ -1,6 +1,7 @@
 // library components
 import { SidebarProvider } from "@/components/ui/shadcn/sidebar";
-import HeaderMenu from "@/components/ui/custom/header-menu";
+import MainMenu from "@/components/layouts/main-menu";
+import HeaderLogo from "@/components/ui/custom/header-logo";
 
 // styling
 import type { Metadata } from "next";
@@ -35,10 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SidebarProvider defaultOpen={true}>
+        <SidebarProvider className="flex flex-row" defaultOpen={false}>
           {AUTH_USER_ID &&
-            <HeaderMenu authUserId={AUTH_USER_ID} />
+            <MainMenu authUserId={AUTH_USER_ID} />
           }
+          <header className="fixed w-full p-2 bg-(--primary)">
+            <HeaderLogo authUserId={AUTH_USER_ID} />
+          </header>
           {children}
         </SidebarProvider>
       </body>
