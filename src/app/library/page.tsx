@@ -104,7 +104,7 @@ export default function Library() {
                     </Accordion>
                 </CardContent>
                 <CardFooter>
-                    <Pagination></Pagination>s
+                    <Pagination></Pagination>
                 </CardFooter>
             </Card>
         </main >
