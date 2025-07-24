@@ -1,6 +1,7 @@
 "use client";
 
 // library components
+import React from "react";
 import {
     Table,
     TableBody,
@@ -17,19 +18,17 @@ import {
     CardFooter
 } from "@/components/ui/shadcn/card";
 import { Pagination } from "@/components/ui/shadcn/pagination";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/shadcn/collapsible";
 import { Separator } from "@/components/ui/shadcn/separator";
-import { Button } from "@/components/ui/shadcn/button";
-import StoryAvatar from "@/components/ui/custom/story-avatar";
-
+import { Skeleton } from "@/components/ui/shadcn/skeleton";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/shadcn/accordion";
+import StorySummary from "@/components/ui/custom/story";
 
 // interfaces
 import Story from "@/interfaces/story";
 
+// icons
+
+const empty: Story[] = [];
 const stories: Story[] = [
     {
         id: 1,
@@ -77,7 +76,7 @@ export default function Library() {
 
     return (
         <main className="library flex flex-col mx-auto mt-18 md:mt-20 content-center">
-            <Card className="mx-auto p-4">
+            <Card className="mx-auto p-10">
                 <CardHeader>
                     <CardTitle>
                         <div className="flex flex-col content-center">
@@ -87,46 +86,27 @@ export default function Library() {
                 </CardHeader>
                 <Separator className="border-(--border)" />
                 <CardContent className="">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead></TableHead>
-                                <TableHead className="text-left">Title</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {stories && stories.length > 0 && stories.map((story: Story) => (
-                                <Collapsible key={story.id} asChild>
-                                    <>
-                                        <TableRow>
-                                            <TableCell>
-                                                <StoryAvatar id={story.id} avatar={story.avatar} title={story.title} /></TableCell>
-                                            <TableCell>
-                                                <CollapsibleTrigger asChild>
-                                                    <span>{story.title}</span>
-                                                </CollapsibleTrigger>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Button variant="ghost" size="icon"></Button>
-                                            </TableCell>
-                                        </TableRow>
-                                        <CollapsibleContent className="m-2" asChild>
-                                            <TableRow>
-                                                <TableCell></TableCell>
-                                                <TableCell>{story.overview}</TableCell>
-                                                {/* toDo: <Link href={story.bookPath}></Link> */}
-                                            </TableRow>
-                                        </CollapsibleContent>
-                                    </>
-                                </Collapsible>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <Accordion type="single" collapsible>
+                        {stories && stories.length > 0 ? stories.map((story: Story) => (
+                            <StorySummary key={story.id} id={story.id} title={story.title}></StorySummary>
+
+                        )) : (
+                            <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
+                                <AccordionTrigger>
+                                    <Skeleton className="h-16 w-16 rounded-full" />
+                                    <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                                </AccordionContent>
+                            </AccordionItem>
+                        )}
+                    </Accordion>
                 </CardContent>
                 <CardFooter>
-                    <Pagination></Pagination>
+                    <Pagination></Pagination>s
                 </CardFooter>
             </Card>
-        </main>
+        </main >
     );
 }

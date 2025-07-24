@@ -1,6 +1,6 @@
 "use client";
 
-// UI components 
+// library components 
 import {
     Avatar,
     AvatarFallback,
@@ -10,7 +10,7 @@ import { useSidebar } from "@/components/ui/shadcn/sidebar";
 import { Button } from "@/components/ui/shadcn/button";
 import Link from "next/link";
 
-// Icons
+// icons
 import { UserRound } from "lucide-react";
 
 export default function UserProfile({
