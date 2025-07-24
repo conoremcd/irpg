@@ -3,14 +3,6 @@
 // library components
 import React from "react";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow
-} from "@/components/ui/shadcn/table";
-import {
     Card,
     CardTitle,
     CardContent,
@@ -21,7 +13,7 @@ import { Pagination } from "@/components/ui/shadcn/pagination";
 import { Separator } from "@/components/ui/shadcn/separator";
 import { Skeleton } from "@/components/ui/shadcn/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/shadcn/accordion";
-import StorySummary from "@/components/ui/custom/story";
+import StorySummary from "@/components/ui/custom/story-summary";
 
 // interfaces
 import Story from "@/interfaces/story";
