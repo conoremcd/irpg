@@ -45,16 +45,7 @@ export default function StorySummary({ ...story }: Story) {
     return (
         <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" key={story.id} value={story.title}>
             <AccordionTrigger>
-                <Link href={"@/library/story/" + story.id + ""}>
-                    <Avatar className="h-16 w-16">
-                        {story.avatar &&
-                            <AvatarImage>{story.avatar.src}</AvatarImage>
-                        }
-                        <AvatarFallback>
-                            <BookOpen />
-                        </AvatarFallback>
-                    </Avatar>
-                </Link>
+                <StoryAvatar id={story.id} avatar={story.avatar} title={story.title}></StoryAvatar>
                 <div>{story.title}</div>
             </AccordionTrigger>
             <AccordionContent>
