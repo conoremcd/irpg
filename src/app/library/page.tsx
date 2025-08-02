@@ -16,7 +16,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import StorySummary from "@/components/ui/custom/story-summary";
 
 // interfaces
-import Story from "@/interfaces/story";
+import Story, { RoleTag } from "@/interfaces/story";
 
 // icons
 
@@ -29,6 +29,8 @@ const stories: Story[] = [
         avatar: undefined,
         players: [],
         npcs: [],
+        userRole: RoleTag.GM,
+        progress: 60.00,
     },
     {
         id: 2,
@@ -37,6 +39,7 @@ const stories: Story[] = [
         avatar: undefined,
         players: [],
         npcs: [],
+        userRole: RoleTag.GM,
     },
     {
         id: 3,
@@ -45,6 +48,7 @@ const stories: Story[] = [
         avatar: undefined,
         players: [],
         npcs: [],
+        userRole: RoleTag.PLAYER,
     },
     {
         id: 4,
@@ -53,6 +57,7 @@ const stories: Story[] = [
         avatar: undefined,
         players: [],
         npcs: [],
+        userRole: RoleTag.PLAYER,
     },
     {
         id: 5,
@@ -61,6 +66,7 @@ const stories: Story[] = [
         avatar: undefined,
         players: [],
         npcs: [],
+        userRole: RoleTag.PLAYER,
     },
 ];
 
@@ -76,11 +82,19 @@ export default function Library() {
                         </div>
                     </CardTitle>
                 </CardHeader>
-                <Separator className="border-(--border)" />
+                <Separator className="border-border" />
                 <CardContent className="">
-                    <Accordion type="single" collapsible>
+                    <Accordion type="single" collapsible className="flex flex-col gap-4">
                         {stories && stories.length > 0 ? stories.map((story: Story) => (
-                            <StorySummary key={story.id} id={story.id} title={story.title}></StorySummary>
+                            <StorySummary
+                                key={story.id}
+                                id={story.id}
+                                title={story.title}
+                                avatar={story.avatar}
+                                overview={story.overview}
+                                userRole={story.userRole}
+                                progress={story.progress}
+                            />
 
                         )) : (
                             <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
