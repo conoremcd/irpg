@@ -33,6 +33,7 @@ import {
 // custom components
 import UserProfile from "@/components/ui/custom/user-profile";
 import HeaderLogo from "@/components/ui/custom/header-logo";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // menu items
 const menuItems: MenuItem[] = [
@@ -78,10 +79,13 @@ export default function MainMenu({
     const { toggleSidebar } = useSidebar();
 
     return (
-        <div className="main-menu">
+        <div className="main-menu bg-sidebar">
             <Sidebar variant="sidebar" collapsible="offcanvas">
-                <SidebarHeader className="flex flex-row justify-between bg-(--sidebar-primary)">
-                    <HeaderLogo></HeaderLogo>
+                <SidebarHeader className="flex flex-row h-24 md:h-30 justify-end">
+                    {/* TODO: repeated code with the header-logo here, should find better way */}
+                    {useIsMobile() &&
+                        <HeaderLogo></HeaderLogo>
+                    }
                     <UserProfile></UserProfile>
                 </SidebarHeader>
                 <SidebarContent>

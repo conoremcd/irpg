@@ -8,80 +8,112 @@ import {
 } from "@/components/ui/shadcn/avatar";
 import { Button } from "@/components/ui/shadcn/button";
 import Link from "next/link";
-import { Skeleton } from "../shadcn/skeleton";
-
-// Icons
-import { Ellipsis, Plus, PenBox, BookOpen, ChevronsDownUp } from "lucide-react";
-
-// interfaces
-import Story, { RoleTag } from "@/interfaces/story";
+import { Skeleton } from "@/components/ui//shadcn/skeleton";
+import {
+    DropdownMenu,
+    DropdownMenuGroup,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem
+} from "../shadcn/dropdown-menu";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/shadcn/accordion";
+import {
+    Card,
+    CardTitle,
+    CardContent,
+    CardHeader,
+    CardFooter
+} from "@/components/ui//shadcn/card";
 import { Label } from "@radix-ui/react-menubar";
+import { Progress } from "@/components/ui/shadcn/progress";
+import { Separator } from "@/components/ui//shadcn/separator";
 
+// Icons
+import { Ellipsis, Plus, PenBox, BookOpen, ChevronsDownUp } from "lucide-react";
 
+// interfaces
+import Story, { RoleTag } from "@/interfaces/story";
 
-export function StoryAvatar({ id, avatar }: { id: number, avatar?: MediaImage }) {
+function StoryAvatar({ id, avatar }: { id: number, avatar?: MediaImage }) {
     const storyPage = "@/library/story/" + id + "";
-
+    const storyMenu = [
+        "launch",
+        "edit",
+        "delete",
+    ];
+    
     return (
-        <Link href={storyPage} className="self-start">
-            <Avatar className="h-16 w-16">
-                {avatar &&
-                    <AvatarImage>{avatar.src}</AvatarImage>
-                }
-                <AvatarFallback className="bg-primary">
-                    <BookOpen className="text-primary-foreground"/>
-                </AvatarFallback>
-            </Avatar>
-        </Link>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild >
+                <Button className="" variant="ghost" size="icon" onClick={() => { }}>
+                    <Avatar className="size-24 m-2">
+                        {avatar &&
+                            <AvatarImage>{avatar.src}</AvatarImage>
+                        }
+                        <AvatarFallback className="bg-primary">
+                            <BookOpen className="size-14 text-primary-foreground" />
+                        </AvatarFallback>
+                    </Avatar>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="fixed top-2">
+                <DropdownMenuGroup>
+                    {storyMenu && storyMenu.map((item, index) => (
+                        <DropdownMenuItem key={index}>{item}</DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 }
 
 export default function StorySummary(story: Story) {
 
     return (
-        <AccordionItem className="flex flex-col p-4 justify-center items-center bg-muted rounded-4xl" key={story.id} value={story.title}>
-            <div className="flex flex-row gap-8 pt-4 items-center w-xl">
-                <StoryAvatar id={story.id} avatar={story.avatar}></StoryAvatar>
-                <div className="grow-2 text-2xl">{story.title}</div>
-                <div className="h-6 w-20 px-2 rounded-md bg-accent text-accent-foreground text-center">{story.userRole}</div>
-            </div>
-            <AccordionTrigger className="size-8" />
-            <AccordionContent className="flex flex-col gap-4 w-xl">
-                <div className="flex flex-row gap-2 items-center justify-end rounded-2xl">
-                    {story.progress &&
-                        <div className="grow-2 h-6 bg-background rounded-full">
-                            <div className="h-full bg-accent rounded-full text-center text-accent-foreground" style={{ width: story.progress + "%" }}>Game Progress {story.progress}%</div>
+        <AccordionItem className="border-none" key={story.id} value={story.title}>
+            <Card className="border-none shadow-2xl rounded-4xl">
+                <CardContent className="flex flex-col gap-2 items-center">
+                    <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
+                        <StoryAvatar id={story.id} avatar={story.avatar}></StoryAvatar>
+                        <div className="grow-2 flex flex-col gap-2">
+                            <div className="flex flex-rows gap-4">
+                                <div className="grow-2 text-2xl uppercase">{story.title}</div>
+                                <div className="h-6 w-16 md:w-20 px-2 rounded-md bg-accent self-end text-accent-foreground text-center">{story.userRole}</div>
+                            </div>
+                            <Separator className="p-0.25 bg-background" />
                         </div>
-                    }
-                    <Button className="launch-game bg-primary"></Button>
-                    {story.userRole && story.userRole === RoleTag.GM &&
-                        <>
-                            <Button className="edit-game bg-secondary"></Button>
-                            <Button className="delete-game bg-destructive"></Button>
-                        </>
-                    }
-                </div>
-                {story.overview &&
-                    <div className="col-span-4 p-4 flex flex-col items-start bg-muted rounded-lg">
-                        <Label className="text-lg">Game Overview</Label>
-                        {story.overview}
+                    </div>
+                    <AccordionTrigger className="size-8" />
+                    <AccordionContent className="flex flex-col gap-4 w-full md:w-xl">
+                        {story.overview &&
+                            <div className="col-span-4 p-4 flex flex-col items-start bg-background text-foreground rounded-lg">
+                                <Label className="text-lg">Summary</Label>
+                                {story.overview}
+                            </div>
+                        }
+                        <div className="flex flex-row gap-4 items-center justify-end rounded-2xl">
+                            {/* if story has progress value, display progress bar */}
+                            {story.progress &&
+                                <>
+                                    <Progress className="" value={story.progress} />
+                                    <span>{story.progress + "%"}</span>
+                                </>
+                            }
                         </div>
-                }
-                <div className="grid grid-cols-5 grid-rows-3 gap-4">
-                    <div className="col-span-3 row-span-3 p-2 rounded-2xl">
-                        <Skeleton className="size-80 p-8 bg-secondary text-center text-secondary-foreground">Game Schedule</Skeleton>
-                    </div>
-                    <div className="col-span-2 row-span-3 p-2 rounded-2xl">
-                        <Skeleton className="size-full p-8 bg-secondary text-center text-secondary-foreground">Player Characters</Skeleton>
-                    </div>
-                </div>
-            </AccordionContent>
+                        {/* TODO: add scheduler and player list components */}
+                        <div className="grid grid-cols-1 md:grid-cols-5 grid-rows-3 gap-4">
+                            <Skeleton className="md:col-span-3 row-span-3 p-2 rounded-2xl min-h-80 p-8 bg-background text-center text-primary">Game Schedule</Skeleton>
+                            <Skeleton className="md:col-span-2 row-span-3 p-2 rounded-2xl p-8 bg-background text-center text-primary">Player Characters</Skeleton>
+                        </div>
+                    </AccordionContent>
+                </CardContent>
+            </Card>
         </AccordionItem>
     );
 }

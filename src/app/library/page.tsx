@@ -2,17 +2,14 @@
 
 // library components
 import React from "react";
-import {
-    Card,
-    CardTitle,
-    CardContent,
-    CardHeader,
-    CardFooter
-} from "@/components/ui/shadcn/card";
-import { Pagination } from "@/components/ui/shadcn/pagination";
-import { Separator } from "@/components/ui/shadcn/separator";
 import { Skeleton } from "@/components/ui/shadcn/skeleton";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/shadcn/accordion";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger
+} from "@/components/ui/shadcn/accordion";
+import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
 import StorySummary from "@/components/ui/custom/story-summary";
 
 // interfaces
@@ -73,46 +70,31 @@ const stories: Story[] = [
 export default function Library() {
 
     return (
-        <main className="library flex flex-col mx-auto mt-18 md:mt-20 content-center">
-            <Card className="mx-auto p-10">
-                <CardHeader>
-                    <CardTitle>
-                        <div className="flex flex-col content-center">
-                            <span className="text-4xl text-center">Game Library</span>
-                        </div>
-                    </CardTitle>
-                </CardHeader>
-                <Separator className="border-border" />
-                <CardContent className="">
-                    <Accordion type="single" collapsible className="flex flex-col gap-4">
-                        {stories && stories.length > 0 ? stories.map((story: Story) => (
-                            <StorySummary
-                                key={story.id}
-                                id={story.id}
-                                title={story.title}
-                                avatar={story.avatar}
-                                overview={story.overview}
-                                userRole={story.userRole}
-                                progress={story.progress}
-                            />
+        <main className="library mx-auto pt-25 md:pt-20 bg-muted">
+            <Accordion className="flex flex-col p-4 md:p-8 gap-4" type="single" collapsible >
+                {stories && stories.length > 0 ? stories.map((story: Story) => (
+                    <StorySummary
+                        key={story.id}
+                        id={story.id}
+                        title={story.title}
+                        avatar={story.avatar}
+                        overview={story.overview}
+                        userRole={story.userRole}
+                        progress={story.progress}
+                    />
 
-                        )) : (
-                            <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
-                                <AccordionTrigger>
-                                    <Skeleton className="h-16 w-16 rounded-full" />
-                                    <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                                </AccordionContent>
-                            </AccordionItem>
-                        )}
-                    </Accordion>
-                </CardContent>
-                <CardFooter>
-                    <Pagination></Pagination>
-                </CardFooter>
-            </Card>
+                )) : (
+                    <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
+                        <AccordionTrigger>
+                            <Skeleton className="h-16 w-16 rounded-full" />
+                            <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                        </AccordionContent>
+                    </AccordionItem>
+                )}
+            </Accordion>
         </main >
     );
 }
