@@ -40,13 +40,8 @@ import { Ellipsis, Plus, PenBox, BookOpen, ChevronsDownUp } from "lucide-react";
 // interfaces
 import Story, { RoleTag } from "@/interfaces/story";
 
-function StoryAvatar({ id, avatar, userRole }: { id: number, avatar?: MediaImage, userRole: RoleTag }) {
-    const storyPage = "@/library/story/" + id + "";
-    const storyMenu = [
-        "launch",
-        "edit",
-        "delete",
-    ];
+function StoryAvatar({ storyID, avatar, userRole }: { storyID: number, avatar?: MediaImage, userRole: RoleTag }) {
+    const storyPage = "/library/" + storyID;
 
     return (
         <DropdownMenu>
@@ -67,13 +62,17 @@ function StoryAvatar({ id, avatar, userRole }: { id: number, avatar?: MediaImage
 
                     {userRole === RoleTag.GM ?
                         <>
-                            <DropdownMenuItem>{"launch"}</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href={storyPage} >launch</Link>
+                            </DropdownMenuItem>
                             <DropdownMenuItem>{"edit"}</DropdownMenuItem>
                             <DropdownMenuItem>{"delete"}</DropdownMenuItem>
                         </>
                         :
                         <>
-                            <DropdownMenuItem>{"launch"}</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href={storyPage} >launch</Link>
+                            </DropdownMenuItem>
                         </>
                     }
                 </DropdownMenuGroup>
@@ -89,7 +88,7 @@ export default function StorySummary(story: Story) {
             <Card className="border-none shadow-2xl rounded-4xl">
                 <CardContent className="flex flex-col gap-2 items-center">
                     <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
-                        <StoryAvatar id={story.id} avatar={story.avatar} userRole={story.userRole}></StoryAvatar>
+                        <StoryAvatar storyID={story.id} avatar={story.avatar} userRole={story.userRole}></StoryAvatar>
                         <div className="grow-2 flex flex-col gap-2">
                             <div className="flex flex-rows gap-4">
                                 <div className="grow-2 text-2xl uppercase">{story.title}</div>

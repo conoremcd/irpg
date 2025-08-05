@@ -72,7 +72,7 @@ export default function Library() {
     return (
         <main className="library mx-auto bg-muted">
             <ScrollArea className="h-svh">
-                <Accordion className="flex flex-col p-4 md:p-8 gap-4" type="single" collapsible >
+                <Accordion className="flex flex-col pt-40 md:py-20 px-4 md:px-8 gap-4" type="single" collapsible >
                     {stories && stories.length > 0 ? stories.map((story: Story) => (
                         <StorySummary
                             key={story.id}
