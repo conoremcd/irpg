@@ -21,13 +21,13 @@ export default function HeaderLogo({
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button className="size-18 absolute top-2 left-2 md:top-8 md:left-4" variant="ghost" size="icon" onClick={toggleSidebar} >
-            <Avatar className="size-18">
+        <Button variant="ghost" size="icon" onClick={toggleSidebar} asChild>
+            <Avatar className="size-18 absolute top-2 left-2 md:top-8 md:left-4 hover:shadow-2xl hover:border-4 hover:border-background rounded-full">
                 {authUserId &&
-                    <AvatarImage className="size-18"></AvatarImage>
+                    <AvatarImage className="size-full"></AvatarImage>
                 }
-                <AvatarFallback className="size-18 bg-primary text-primary-foreground">
-                    <Hexagon className="size-12"></Hexagon>
+                <AvatarFallback className="bg-primary text-primary-foreground p-2">
+                    <Hexagon className="size-full"></Hexagon>
                 </AvatarFallback>
             </Avatar>
         </Button>

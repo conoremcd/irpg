@@ -40,33 +40,42 @@ import { Ellipsis, Plus, PenBox, BookOpen, ChevronsDownUp } from "lucide-react";
 // interfaces
 import Story, { RoleTag } from "@/interfaces/story";
 
-function StoryAvatar({ id, avatar }: { id: number, avatar?: MediaImage }) {
+function StoryAvatar({ id, avatar, userRole }: { id: number, avatar?: MediaImage, userRole: RoleTag }) {
     const storyPage = "@/library/story/" + id + "";
     const storyMenu = [
         "launch",
         "edit",
         "delete",
     ];
-    
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild >
-                <Button className="" variant="ghost" size="icon" onClick={() => { }}>
-                    <Avatar className="size-24 m-2">
+                <Button className="-m-8" variant="ghost" size="icon" onClick={() => { }} asChild>
+                    <Avatar className="size-24 hover:shadow-2xl hover:border-4 hover:border-background rounded-full">
                         {avatar &&
                             <AvatarImage>{avatar.src}</AvatarImage>
                         }
-                        <AvatarFallback className="bg-primary">
-                            <BookOpen className="size-14 text-primary-foreground" />
+                        <AvatarFallback className="bg-primary p-4">
+                            <BookOpen className="size-full text-primary-foreground" />
                         </AvatarFallback>
                     </Avatar>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="fixed top-2">
+            <DropdownMenuContent className="md:fixed md:-top-4">
                 <DropdownMenuGroup>
-                    {storyMenu && storyMenu.map((item, index) => (
-                        <DropdownMenuItem key={index}>{item}</DropdownMenuItem>
-                    ))}
+
+                    {userRole === RoleTag.GM ?
+                        <>
+                            <DropdownMenuItem>{"launch"}</DropdownMenuItem>
+                            <DropdownMenuItem>{"edit"}</DropdownMenuItem>
+                            <DropdownMenuItem>{"delete"}</DropdownMenuItem>
+                        </>
+                        :
+                        <>
+                            <DropdownMenuItem>{"launch"}</DropdownMenuItem>
+                        </>
+                    }
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
@@ -80,7 +89,7 @@ export default function StorySummary(story: Story) {
             <Card className="border-none shadow-2xl rounded-4xl">
                 <CardContent className="flex flex-col gap-2 items-center">
                     <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
-                        <StoryAvatar id={story.id} avatar={story.avatar}></StoryAvatar>
+                        <StoryAvatar id={story.id} avatar={story.avatar} userRole={story.userRole}></StoryAvatar>
                         <div className="grow-2 flex flex-col gap-2">
                             <div className="flex flex-rows gap-4">
                                 <div className="grow-2 text-2xl uppercase">{story.title}</div>

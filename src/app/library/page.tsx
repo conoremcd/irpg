@@ -70,31 +70,33 @@ const stories: Story[] = [
 export default function Library() {
 
     return (
-        <main className="library mx-auto pt-25 md:pt-20 bg-muted">
-            <Accordion className="flex flex-col p-4 md:p-8 gap-4" type="single" collapsible >
-                {stories && stories.length > 0 ? stories.map((story: Story) => (
-                    <StorySummary
-                        key={story.id}
-                        id={story.id}
-                        title={story.title}
-                        avatar={story.avatar}
-                        overview={story.overview}
-                        userRole={story.userRole}
-                        progress={story.progress}
-                    />
+        <main className="library mx-auto bg-muted">
+            <ScrollArea className="h-svh">
+                <Accordion className="flex flex-col p-4 md:p-8 gap-4" type="single" collapsible >
+                    {stories && stories.length > 0 ? stories.map((story: Story) => (
+                        <StorySummary
+                            key={story.id}
+                            id={story.id}
+                            title={story.title}
+                            avatar={story.avatar}
+                            overview={story.overview}
+                            userRole={story.userRole}
+                            progress={story.progress}
+                        />
 
-                )) : (
-                    <AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
-                        <AccordionTrigger>
-                            <Skeleton className="h-16 w-16 rounded-full" />
-                            <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                            <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                        </AccordionContent>
-                    </AccordionItem>
-                )}
-            </Accordion>
+                    )) : (
+                        < AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
+                            <AccordionTrigger>
+                                <Skeleton className="h-16 w-16 rounded-full" />
+                                <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
+                            </AccordionContent>
+                        </AccordionItem>
+                    )}
+                </Accordion>
+            </ScrollArea>
         </main >
     );
 }

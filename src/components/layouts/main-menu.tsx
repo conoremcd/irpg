@@ -81,7 +81,7 @@ export default function MainMenu({
     return (
         <div className="main-menu bg-sidebar">
             <Sidebar variant="sidebar" collapsible="offcanvas">
-                <SidebarHeader className="flex flex-row h-24 md:h-30 justify-end">
+                <SidebarHeader className="flex flex-row h-24 md:h-30 md:px-4 md:py-8 justify-end">
                     {/* TODO: repeated code with the header-logo here, should find better way */}
                     {useIsMobile() &&
                         <HeaderLogo></HeaderLogo>

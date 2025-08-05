@@ -24,14 +24,14 @@ export default function UserProfile({
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button className="size-18" variant="ghost" size="icon" onClick={toggleSidebar}>
+        <Button variant="ghost" size="icon" onClick={toggleSidebar} asChild>
             <Link className="size-18" href={profileLink.url}>
-                <Avatar className="size-18">
+                <Avatar className="size-18 hover:border-4 hover:border-background rounded-full">
                     {authUserId &&
                         <AvatarImage className="size-18"/>
                     }
-                    <AvatarFallback className="size-18">
-                        <UserRound className="size-12"/>
+                    <AvatarFallback className="bg-primary text-primary-foreground p-2">
+                        <UserRound className="size-full"/>
                     </AvatarFallback>
                 </Avatar>
             </Link>
