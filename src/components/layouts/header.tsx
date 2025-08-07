@@ -12,11 +12,11 @@ export default function Header({
     const alerts: boolean[] = [];
 
     return (
-        <header className="fixed z-50 w-screen flex flex-row justify-center">
+        <header className="fixed z-50 w-screen h-0 flex flex-row justify-center">
             <HeaderLogo authUserId={authUserId} />
             <div className="flex flex-col -z-10">
                 {alerts.length == 0 &&
-                    <Skeleton className="bg-transparent pt-10 md:pt-4 px-2 md:px-8">
+                    <Skeleton className="bg-transparent pt-10 md:pt-8 px-2 md:px-8">
                         <Alert className="alert text-center text-lg text-primary bg-background border-none shadow-2xl rounded-4xl" variant="default">
                             <AlertTitle>!!Alert!!</AlertTitle>
                             <AlertDescription>

@@ -25,7 +25,7 @@ export default function UserProfile({
 
     return (
         <Button variant="ghost" size="icon" onClick={toggleSidebar} asChild>
-            <Link className="size-18" href={profileLink.url}>
+            <Link className="size-18 z-40" href={profileLink.url}>
                 <Avatar className="size-18 hover:border-4 hover:border-background rounded-full">
                     {authUserId &&
                         <AvatarImage className="size-18"/>

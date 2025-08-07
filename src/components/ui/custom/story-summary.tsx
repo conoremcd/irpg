@@ -46,10 +46,10 @@ function StoryAvatar({ storyID, avatar, userRole }: { storyID: number, avatar?: 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild >
-                <Button className="-m-8" variant="ghost" size="icon" onClick={() => { }} asChild>
-                    <Avatar className="size-24 hover:shadow-2xl hover:border-4 hover:border-background rounded-full">
+                <Button className="-m-8" variant="ghost" size="icon" asChild>
+                    <Avatar className="size-24 shadow-lg shadow-white hover:border-4 hover:border-background rounded-full">
                         {avatar &&
-                            <AvatarImage>{avatar.src}</AvatarImage>
+                            <AvatarImage className="">{avatar.src}</AvatarImage>
                         }
                         <AvatarFallback className="bg-primary p-4">
                             <BookOpen className="size-full text-primary-foreground" />
@@ -84,8 +84,8 @@ function StoryAvatar({ storyID, avatar, userRole }: { storyID: number, avatar?: 
 export default function StorySummary(story: Story) {
 
     return (
-        <AccordionItem className="border-none" key={story.id} value={story.title}>
-            <Card className="border-none shadow-2xl rounded-4xl">
+        <AccordionItem className="border-none snap-center snap-always" key={story.id} value={story.title}>
+            <Card className="transition border-none shadow-2xl rounded-4xl hover:transition-transform hover:scale-106 hover:my-4 hover:ease-in-out">
                 <CardContent className="flex flex-col gap-2 items-center">
                     <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
                         <StoryAvatar storyID={story.id} avatar={story.avatar} userRole={story.userRole}></StoryAvatar>
@@ -97,7 +97,7 @@ export default function StorySummary(story: Story) {
                             <Separator className="p-0.25 bg-background" />
                         </div>
                     </div>
-                    <AccordionTrigger className="size-8" />
+                    <AccordionTrigger className="size-8 transition hover:scale-200 hover: " />
                     <AccordionContent className="flex flex-col gap-4 w-full md:w-xl">
                         {story.overview &&
                             <div className="col-span-4 p-4 flex flex-col items-start bg-background text-foreground rounded-lg">
