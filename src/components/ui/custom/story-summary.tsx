@@ -1,6 +1,7 @@
 "use client";
 
 // library components 
+import React, { useRef } from "react";
 import {
     Avatar,
     AvatarFallback,
@@ -82,10 +83,19 @@ function StoryAvatar({ storyID, avatar, userRole }: { storyID: number, avatar?: 
 }
 
 export default function StorySummary(story: Story) {
+    const targetRef = useRef<HTMLDivElement>(null);
+
+    const scrollToContent = () => {
+        setTimeout(() => {
+            if (story && targetRef.current!) {
+                targetRef.current!.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 200)
+    };
 
     return (
-        <AccordionItem className="border-none snap-center snap-always" key={story.id} value={story.title}>
-            <Card className="transition border-none shadow-2xl rounded-4xl hover:transition-transform hover:scale-106 hover:my-4 hover:ease-in-out">
+        <AccordionItem className="border-none snap-start snap-always" key={story.id} value={story.title}>
+            <Card ref={targetRef} className="transition border-none shadow-2xl rounded-4xl hover:transition-transform hover:scale-106 hover:ease-in-out hover:duration-400 hover:delay-150">
                 <CardContent className="flex flex-col gap-2 items-center">
                     <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
                         <StoryAvatar storyID={story.id} avatar={story.avatar} userRole={story.userRole}></StoryAvatar>
@@ -97,8 +107,8 @@ export default function StorySummary(story: Story) {
                             <Separator className="p-0.25 bg-background" />
                         </div>
                     </div>
-                    <AccordionTrigger className="size-8 transition hover:scale-200 hover: " />
-                    <AccordionContent className="flex flex-col gap-4 w-full md:w-xl">
+                    <AccordionTrigger className="size-8 transition hover:scale-200 " onClick={scrollToContent} />
+                    <AccordionContent className="flex flex-col gap-4 w-full md:w-xl snap-center snap-always">
                         {story.overview &&
                             <div className="col-span-4 p-4 flex flex-col items-start bg-background text-foreground rounded-lg">
                                 <Label className="text-lg">Summary</Label>

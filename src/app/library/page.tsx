@@ -17,7 +17,10 @@ import StorySummary from "@/components/ui/custom/story-summary";
 import Story, { RoleTag } from "@/interfaces/story";
 
 // icons
-import { Plus } from "lucide-react";
+import { BookOpen, Plus } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/shadcn/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/shadcn/avatar";
+import { Separator } from "@/components/ui/shadcn/separator";
 
 const empty: Story[] = [];
 const stories: Story[] = [
@@ -73,8 +76,8 @@ export default function Library() {
 
     return (
         <main className="library mx-auto bg-muted">
-            <ScrollArea className="h-svh ">
-                <Accordion className="flex flex-col py-40 md:py-30 px-4 md:px-8 gap-4" type="single" collapsible >
+            <ScrollArea className="h-screen snap-y snap-mandatory overflow-y-scroll">
+                <Accordion className="flex flex-col py-40 md:py-30 px-4 md:px-8 gap-8" type="single" collapsible >
                     {stories && stories.length > 0 ? stories.map((story: Story) => (
                         <StorySummary
                             key={story.id}
@@ -86,18 +89,31 @@ export default function Library() {
                             progress={story.progress}
                         />
                     )) : (
-                        < AccordionItem className="flex flex-col md:flex-row gap-2 justify-center" value={""}>
-                            <AccordionTrigger>
-                                <Skeleton className="h-16 w-16 rounded-full" />
-                                <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <Skeleton className="h-8 w-84 p-2 rounded-full"></Skeleton>
-                            </AccordionContent>
-                        </AccordionItem>
+                        <Skeleton className="border-none bg-none rounded-4xl">
+                            <AccordionItem className="border-none snap-center snap-always" value="story title">
+                                <Card className="transition border-none shadow-2xl rounded-4xl hover:transition-transform hover:scale-106 hover:ease-in-out hover:duration-400 hover:delay-150">
+                                    <CardContent className="flex flex-col gap-2 items-center">
+                                        <div className="flex flex-col md:flex-row gap-12 items-center w-full md:w-xl">
+                                            <Avatar className="size-24 shadow-lg shadow-white hover:border-4 hover:border-background rounded-full">
+                                                <AvatarFallback className="bg-primary p-4">
+                                                    <BookOpen className="size-full text-primary-foreground" />
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="grow-2 flex flex-col gap-2">
+                                                <div className="flex flex-rows gap-4">
+                                                    <div className="grow-2 text-2xl uppercase"></div>
+                                                    <div className="h-6 w-16 md:w-20 px-2 rounded-md bg-accent self-end text-accent-foreground text-center"></div>
+                                                </div>
+                                                <Separator className="p-0.25 bg-background" />
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </AccordionItem>
+                        </Skeleton>
                     )}
                     <div className="flex flex-col md:flex-row justify-center order-first md:order-last pt-4 md:pt-0">
-                        <Button variant="ghost" size="icon" className="shadow-lg shadow-white bg-primary hover:border-4 hover:border-background rounded-full" asChild>
+                        <Button variant="ghost" size="icon" className="add-button shadow-lg shadow-white bg-primary hover:border-4 hover:border-background rounded-full" asChild>
                             <span className="size-fit"><Plus className="size-18 text-primary-foreground rounded-full"></Plus></span>
                         </Button>
                     </div>
