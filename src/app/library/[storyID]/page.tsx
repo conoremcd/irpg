@@ -8,19 +8,13 @@ import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
 import Story, { RoleTag } from "@/interfaces/story";
 import { Avatar } from "@radix-ui/react-avatar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Skeleton } from "@/components/ui/shadcn/skeleton";
 
 // icons
 
 export default function GameView() {
-    
 
-    let squares: number[] = Array(624).fill(0);
 
-    if (useIsMobile() === true ) {
-        
-        squares = Array(74).fill(0);
-
-    }
 
     return (
         <main className="story mx-auto bg-muted">
@@ -28,21 +22,15 @@ export default function GameView() {
 
             }
             <>
-            {/* TODO: add challenge avatars panel */}
+                {/* TODO: add challenge avatars panel */}
             </>
-            <ScrollArea className="">
-                <div className="w-svw h-svh md:p-8">
-                    <div className="map grid grid-rows-15 grid-cols-5 md:grid-rows-10 md:grid-cols-10 lg:grid-rows-25 lg:grid-cols-25 border-2 border-background inset-shadow-lg bg-foreground w-full h-full lg:w-200 lg:h-200 md:rounded-4xl overflow-hidden">
-                        <img></img>
-                        {squares.length > 0 && squares.map((square, index) => (
-                            
-                            <div key={index} className="bg-transparent border-1 border-primary-foreground p-2"></div>
-                        ))}
-                    </div>
-                </div>
-            </ScrollArea>
+            <div className="flex flex-col h-screen gap-4 justify-center md:p-14">
+                <Skeleton className="aspect-[calc(5/12))] md:aspect-square lg:aspect-video overflow-hidden rounded-4xl">
+                    <img className="size-300  bg-primary"></img>
+                </Skeleton>
+            </div>
             <>
-            {/* TODO: add character avatars panel */}
+                {/* TODO: add character avatars panel */}
             </>
         </main >
     );
