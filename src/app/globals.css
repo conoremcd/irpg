@@ -121,3 +121,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .story-card {
+    @apply transition border-none shadow-2xl rounded-4xl hover:transition-transform hover:scale-106 hover:ease-in-out hover:duration-400 hover:delay-150;
+  }
+}

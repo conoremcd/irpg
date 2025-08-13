@@ -8,13 +8,16 @@ export enum RoleTag {
 }
 
 export default interface Story {
-    id: number,
+    id: string,
     title: string,
     userRole: RoleTag,
     overview?: string,
     avatar?: MediaImage,
     progress?: number,
-    schedule?: Date[],
+    schedule?: string[],
     players?: Character[],
     npcs?: Character[],
+    createdOn: string,
+    lastUpdated: string,
+    isEditing: boolean,
 }
