@@ -31,8 +31,8 @@ import {
 } from "lucide-react";
 
 // custom components
-import UserProfile from "@/components/ui/custom/user-profile";
-import HeaderLogo from "@/components/ui/custom/header-logo";
+import UserProfile from "@/components/ui/custom/main/user-profile";
+import HeaderLogo from "@/components/ui/custom/main/header-logo";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // menu items

@@ -32,26 +32,24 @@ import { Ellipsis, Plus, BookOpen } from "lucide-react";
 // interfaces
 import Story, { RoleTag } from "@/interfaces/story";
 
-const storyFormSchema = z.object({
-    title: z.string().min(3, {
-        message: "Title must be at least 3 characters."
-    }).max(25, {
-        message: "Title must be no more than 25 characters."
-    }),
-    createdOn: z.iso.datetime(),
+// schemas
+import {
+    AddStoryFormSchema,
+    AddStoryFormSchemaType
+} from "@/schemas/library-schemas";
 
-});
+
 
 export default function AddStoryForm({ onAddStory }: { onAddStory: Function }) {
-    const storyForm = useForm<z.infer<typeof storyFormSchema>>({
-        resolver: zodResolver(storyFormSchema),
+    const storyForm = useForm<AddStoryFormSchemaType>({
+        resolver: zodResolver(AddStoryFormSchema),
         defaultValues: {
             title: "",
             createdOn: new Date().toISOString(),
         }
     });
 
-    function onSubmit(values: z.infer<typeof storyFormSchema>) {
+    function onSubmit(values: z.infer<typeof AddStoryFormSchema>) {
         // TODO: supabase API call to add new story to database
         const newStory: Story = {
             id: uuidv4(),

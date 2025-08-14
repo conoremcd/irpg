@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/shadcn/dialog";
 import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
 import { Button } from "@/components/ui/shadcn/button";
-import StorySummary from "@/components/ui/custom/story-summary";
-import AddStoryForm from "@/components/ui/custom/add-story-form";
+import StorySummary from "@/components/ui/custom/library/story-summary";
+import AddStoryForm from "@/components/ui/custom/library/add-story-form";
 
 // interfaces
 import Story, { RoleTag } from "@/interfaces/story";

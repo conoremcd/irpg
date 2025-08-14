@@ -1,5 +1,5 @@
 // custom components
-import HeaderLogo from "@/components/ui/custom/header-logo";
+import HeaderLogo from "@/components/ui/custom/main/header-logo";
 import { Skeleton } from "@/components/ui/shadcn/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/shadcn/alert";
 
@@ -11,7 +11,7 @@ export default function Header({
 }) {
     const alerts: boolean[] = [];
     const toggleAlertsBanner = () => {
-        
+
     };
 
     return (
