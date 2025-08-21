@@ -28,6 +28,9 @@ import { Card, CardContent } from "@/components/ui/shadcn/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/shadcn/avatar";
 import { Separator } from "@/components/ui/shadcn/separator";
 
+// supabase client
+import { createClient } from '@/utils/supabase/client';
+
 const todayDate: string = new Date().toISOString();
 const empty: Story[] = [];
 const stories: Story[] = [
@@ -94,20 +97,41 @@ const stories: Story[] = [
     },
 ];
 
-export default function Library() {
+export default async function Library() {
+    const supabase = await createClient();
+    const { data: library } = await supabase.from("library").select();
+    const storyData: Story[] | undefined = library?.map((story) => {
+        let record: Story = {
+            id: story.id,
+            title: story.game_title,
+            userRole: RoleTag.GM,
+            overview: story.game_overview,
+            avatar: story.game_avatar_img ? undefined : undefined,
+            progress: story.game_progress,
+            schedule: [],
+            players: [],
+            npcs: [],
+            createdOn: story.created_at,
+            lastUpdated: story.last_updated,
+            isEditing: false,
+        }
+
+        return record;
+    });
+
     // CRUD functions
-    const [storyList, setStoryList] = useState(empty);
+    const [storyList, setStoryList] = useState(storyData);
     const addStory = (story: Story) => {
-        setStoryList([...storyList, story]);
+        setStoryList([...storyList ?? [], story]);
     }
     const updateStory = (edited: Story) => {
-        setStoryList(storyList.map((story) => story.id === edited?.id ? { ...edited, isEditing: false } : story));
+        setStoryList(storyList?.map((story) => story.id === edited?.id ? { ...edited, isEditing: false } : story));
     }
     const deleteStory = (deleted: Story) => {
-        setStoryList(storyList.filter((story) => story.id != deleted?.id));
+        setStoryList(storyList?.filter((story) => story.id != deleted?.id));
     }
     const toggleEditMode = (editing: Story) => {
-        setStoryList(storyList.map((story) => story.id === editing?.id ? { ...story, isEditing: !story.isEditing } : story ));
+        setStoryList(storyList?.map((story) => story.id === editing?.id ? { ...story, isEditing: !story.isEditing } : story));
     }
 
     return (

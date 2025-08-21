@@ -1,7 +1,7 @@
 // library components
 import { Separator } from "@/components/ui/shadcn/separator";
 
-export default function Home() {
+export default async function Home() {
 
   return (
     <main className="flex flex-col mx-auto mt-12 content-center">
