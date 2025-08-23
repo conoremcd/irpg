@@ -12,6 +12,7 @@ import { useSidebar } from "@/components/ui/shadcn/sidebar";
 // icons
 import { Hexagon } from "lucide-react";
 
+// Logo button to open main menu navigation from root layout drawer
 export default function HeaderLogo({
     authUserId,
 }: Readonly<{
@@ -20,15 +21,16 @@ export default function HeaderLogo({
     const { toggleSidebar } = useSidebar();
 
     return (
-        <Button className="" variant="ghost" size="icon" onClick={toggleSidebar}>
-            <Avatar>
+        <Button variant="ghost" size="icon" onClick={toggleSidebar} asChild>
+            <Avatar className="size-18 absolute top-2 left-2 md:top-8 md:left-4 hover:shadow-2xl hover:border-4 hover:border-background rounded-full">
                 {authUserId &&
-                    <AvatarImage></AvatarImage>
+                    <AvatarImage className="size-full"></AvatarImage>
                 }
-                <AvatarFallback>
-                    <Hexagon></Hexagon>
+                <AvatarFallback className="bg-primary text-primary-foreground p-2">
+                    <Hexagon className="size-full"></Hexagon>
                 </AvatarFallback>
             </Avatar>
         </Button>
+
     );
 }

@@ -7,7 +7,6 @@ import MenuItem from "@/interfaces/menu-item";
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -16,6 +15,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
     SidebarRail,
+    useSidebar
 } from "@/components/ui/shadcn/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,12 +28,12 @@ import {
     Library,
     UserRoundPen,
     Settings,
-    SidebarClose,
 } from "lucide-react";
 
 // custom components
-import FooterProfile from "@/components/ui/custom/footer-profile";
-import HeaderLogo from "@/components/ui/custom/header-logo";
+import UserProfile from "@/components/ui/custom/main/user-profile";
+import HeaderLogo from "@/components/ui/custom/main/header-logo";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // menu items
 const menuItems: MenuItem[] = [
@@ -69,18 +69,24 @@ const menuItems: MenuItem[] = [
     },
 ];
 
-export default function HeaderMenu({
+export default function MainMenu({
     authUserId,
 }: Readonly<{
     authUserId?: number;
 }>) {
 
     const pathName = usePathname();
+    const { toggleSidebar } = useSidebar();
+
     return (
-        <header className="header">
-            <Sidebar variant="sidebar" collapsible="icon">
-                <SidebarHeader className="flex flex-row justify-end-safe bg-(--sidebar-primary)">
-                    <HeaderLogo authUserId={authUserId}></HeaderLogo>
+        <div className="main-menu bg-sidebar z-10">
+            <Sidebar variant="sidebar" collapsible="offcanvas">
+                <SidebarHeader className="flex flex-row h-24 md:h-30 md:px-4 md:py-8 justify-end">
+                    {/* TODO: repeated code with the header-logo here, should find better way */}
+                    {useIsMobile() &&
+                        <HeaderLogo></HeaderLogo>
+                    }
+                    <UserProfile></UserProfile>
                 </SidebarHeader>
                 <SidebarContent>
                     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -89,7 +95,7 @@ export default function HeaderMenu({
                             <SidebarMenu>
                                 {menuItems && menuItems.length > 0 && menuItems.map((item) => (
                                     <SidebarMenuItem key={item.title}>
-                                        <SidebarMenuButton asChild isActive={pathName === item.url}>
+                                        <SidebarMenuButton asChild isActive={pathName === item.url} onClick={toggleSidebar}>
                                             <Link href={item.url}>
                                                 <item.icon />
                                                 <span>{item.title}</span>
@@ -101,11 +107,8 @@ export default function HeaderMenu({
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
-                <SidebarFooter className="flex flex-col bg-(--sidebar-accent)">
-                    <FooterProfile></FooterProfile>
-                </SidebarFooter>
                 <SidebarRail />
             </Sidebar>
-        </header>
+        </div>
     );
 }
