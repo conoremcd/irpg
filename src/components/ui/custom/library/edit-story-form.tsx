@@ -59,12 +59,6 @@ export default function EditStoryForm({
         story.progress = values.progress;
         story.lastUpdated = new Date().toISOString();
 
-        // avatar file parsing
-        if (values.avatar) {
-            // TODO: upload file to supabase
-            // TODO: update story avatar src to refer to uploaded file
-        }
-
         onUpdateStory(story);
         console.log(story);
         console.log(values);
@@ -73,6 +67,15 @@ export default function EditStoryForm({
     function onCancel() {
         onToggleEditMode(story);
     }
+
+    const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0]; // Get the selected file
+
+        if (file) {
+            console.log("Selected file:", file);
+            // You can now process the file, e.g., upload it, display a preview, etc.
+        }
+    };
 
     return (
         <Form {...form}>
@@ -87,7 +90,7 @@ export default function EditStoryForm({
                                 <FormItem className="flex flex-col max-w-50">
                                     <FormLabel>Game Avatar</FormLabel>
                                     <FormControl>
-                                        <Input type="file" onChange={field.onChange} accept="image/*" />
+                                        <Input type="file" onChange={handleFormChange} accept="image/*" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

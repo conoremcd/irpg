@@ -39,40 +39,40 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const menuItems: MenuItem[] = [
     {
         title: "Dashboard",
-        url: "/dashboard",
+        url: "/",
         icon: House,
     },
     {
         title: "Library",
-        url: "/dashboard/library",
+        url: "/library",
         icon: Library,
     },
     {
         title: "Characters",
-        url: "/dashboard/characters",
+        url: "/characters",
         icon: BookUser,
     },
     {
         title: "Assets",
-        url: "/dashboard/assets",
+        url: "/assets",
         icon: Images,
     },
     {
         title: "Profile",
-        url: "/dashboard/profile",
+        url: "/profile",
         icon: UserRoundPen,
     },
     {
         title: "Settings",
-        url: "/dashboard/settings",
+        url: "/settings",
         icon: Settings,
     },
 ];
 
 export default function MainMenu({
-    userID,
+    authUserId,
 }: Readonly<{
-    userID?: string | undefined;
+    authUserId?: number;
 }>) {
 
     const pathName = usePathname();
