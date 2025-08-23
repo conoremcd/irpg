@@ -28,90 +28,24 @@ import { Card, CardContent } from "@/components/ui/shadcn/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/shadcn/avatar";
 import { Separator } from "@/components/ui/shadcn/separator";
 
-const todayDate: string = new Date().toISOString();
-const empty: Story[] = [];
-const stories: Story[] = [
-    {
-        id: "1",
-        title: "my first campaign",
-        overview: "once upon a time, some players rolled some dice... ...and they played happily ever-after",
-        avatar: undefined,
-        players: [],
-        npcs: [],
-        userRole: RoleTag.GM,
-        progress: 60.00,
-        createdOn: todayDate,
-        lastUpdated: todayDate,
-        isEditing: false,
-    },
-    {
-        id: "2",
-        title: "a second campaign",
-        overview: "once upon a time, some players rolled some dice... ...and they played happily ever-after",
-        avatar: undefined,
-        players: [],
-        npcs: [],
-        userRole: RoleTag.GM,
-        createdOn: todayDate,
-        lastUpdated: todayDate,
-        isEditing: false,
-    },
-    {
-        id: "3",
-        title: "and another campaign",
-        overview: "once upon a time, some players rolled some dice... ...and they played happily ever-after",
-        avatar: undefined,
-        players: [],
-        npcs: [],
-        userRole: RoleTag.PLAYER,
-        createdOn: todayDate,
-        lastUpdated: todayDate,
-        isEditing: false,
-    },
-    {
-        id: "4",
-        title: "and another one",
-        overview: "once upon a time, some players rolled some dice... ...and they played happily ever-after",
-        avatar: undefined,
-        players: [],
-        npcs: [],
-        userRole: RoleTag.PLAYER,
-        createdOn: todayDate,
-        lastUpdated: todayDate,
-        isEditing: false,
-    },
-    {
-        id: "5",
-        title: "and one more",
-        overview: "once upon a time, some players rolled some dice... ...and they played happily ever-after",
-        avatar: undefined,
-        players: [],
-        npcs: [],
-        userRole: RoleTag.PLAYER,
-        createdOn: todayDate,
-        lastUpdated: todayDate,
-        isEditing: false,
-    },
-];
+export default function Library({ stories }: { stories: Story[] | undefined }) {
 
-export default function Library() {
     // CRUD functions
-    const [storyList, setStoryList] = useState(empty);
+    const [storyList, setStoryList] = useState(stories);
     const addStory = (story: Story) => {
-        setStoryList([...storyList, story]);
+        setStoryList([...storyList ?? [], story]);
     }
     const updateStory = (edited: Story) => {
-        setStoryList(storyList.map((story) => story.id === edited?.id ? { ...edited, isEditing: false } : story));
+        setStoryList(storyList?.map((story) => story.id === edited?.id ? { ...edited, isEditing: false } : story));
     }
     const deleteStory = (deleted: Story) => {
-        setStoryList(storyList.filter((story) => story.id != deleted?.id));
+        setStoryList(storyList?.filter((story) => story.id != deleted?.id));
     }
     const toggleEditMode = (editing: Story) => {
-        setStoryList(storyList.map((story) => story.id === editing?.id ? { ...story, isEditing: !story.isEditing } : story ));
+        setStoryList(storyList?.map((story) => story.id === editing?.id ? { ...story, isEditing: !story.isEditing } : story));
     }
 
     return (
-        <main className="library mx-auto bg-muted">
             <Dialog>
                 <DialogContent>
                     <AddStoryForm onAddStory={addStory}></AddStoryForm>
@@ -162,6 +96,5 @@ export default function Library() {
                     </Accordion>
                 </ScrollArea>
             </Dialog>
-        </main >
     );
 }

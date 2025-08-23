@@ -7,6 +7,7 @@ import MenuItem from "@/interfaces/menu-item";
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -19,6 +20,8 @@ import {
 } from "@/components/ui/shadcn/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { User } from "@supabase/supabase-js";
 
 // icons
 import {
@@ -31,48 +34,48 @@ import {
 } from "lucide-react";
 
 // custom components
-import UserProfile from "@/components/ui/custom/main/user-profile";
 import HeaderLogo from "@/components/ui/custom/main/header-logo";
-import { useIsMobile } from "@/hooks/use-mobile";
+import SignoutForm from "@/components/ui/custom/main/signout-form";
+import MenuProfile from "@/components/ui/custom/main/menu-profile";
 
 // menu items
 const menuItems: MenuItem[] = [
     {
         title: "Dashboard",
-        url: "/",
+        url: "/dashboard",
         icon: House,
     },
     {
         title: "Library",
-        url: "/library",
+        url: "/dashboard/library",
         icon: Library,
     },
     {
         title: "Characters",
-        url: "/characters",
+        url: "/dashboard/characters",
         icon: BookUser,
     },
     {
         title: "Assets",
-        url: "/assets",
+        url: "/dashboard/assets",
         icon: Images,
     },
     {
         title: "Profile",
-        url: "/profile",
+        url: "/dashboard/profile",
         icon: UserRoundPen,
     },
     {
         title: "Settings",
-        url: "/settings",
+        url: "/dashboard/settings",
         icon: Settings,
     },
 ];
 
 export default function MainMenu({
-    authUserId,
+    user,
 }: Readonly<{
-    authUserId?: number;
+    user?: User | null;
 }>) {
 
     const pathName = usePathname();
@@ -86,7 +89,7 @@ export default function MainMenu({
                     {useIsMobile() &&
                         <HeaderLogo></HeaderLogo>
                     }
-                    <UserProfile></UserProfile>
+                    <MenuProfile user={user}></MenuProfile>
                 </SidebarHeader>
                 <SidebarContent>
                     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -107,6 +110,9 @@ export default function MainMenu({
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
+                <SidebarFooter className="flex flex-row justify-end">
+                    <SignoutForm />
+                </SidebarFooter>
                 <SidebarRail />
             </Sidebar>
         </div>

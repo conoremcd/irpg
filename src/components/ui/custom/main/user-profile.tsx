@@ -6,35 +6,32 @@ import {
     AvatarFallback,
     AvatarImage
 } from "@/components/ui/shadcn/avatar";
-import { useSidebar } from "@/components/ui/shadcn/sidebar";
-import { Button } from "@/components/ui/shadcn/button";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 // icons
 import { UserRound } from "lucide-react";
 
 export default function UserProfile({
-    authUserId,
-}: Readonly<{
-    authUserId?: number;
-}>) {
-    const profileLink = {
-        url: "/profile",
-    }
-    const { toggleSidebar } = useSidebar();
+    isLoading,
+    avatar_url,
+    className,
+}: {
+    isLoading: boolean,
+    avatar_url?: string | Blob | undefined,
+    className?: string,
+}) {
 
     return (
-        <Button variant="ghost" size="icon" onClick={toggleSidebar} asChild>
-            <Link className="size-18 z-40" href={profileLink.url}>
-                <Avatar className="size-18 hover:border-4 hover:border-background rounded-full">
-                    {authUserId &&
-                        <AvatarImage className="size-18"/>
-                    }
-                    <AvatarFallback className="bg-primary text-primary-foreground p-2">
-                        <UserRound className="size-full"/>
-                    </AvatarFallback>
-                </Avatar>
-            </Link>
-        </Button>
+        <Avatar className={cn(
+            "size-18 hover:border-4 hover:border-background rounded-full",
+            className,
+        )} >
+            {!isLoading &&
+                <AvatarImage className="size-full" src={avatar_url} />
+            }
+            <AvatarFallback className="bg-primary text-primary-foreground p-2">
+                <UserRound className="size-full" />
+            </AvatarFallback>
+        </Avatar >
     );
 }

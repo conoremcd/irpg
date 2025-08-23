@@ -4,11 +4,7 @@ import { Skeleton } from "@/components/ui/shadcn/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/shadcn/alert";
 
 //
-export default function Header({
-    authUserId,
-}: {
-    authUserId: number
-}) {
+export default function Header() {
     const alerts: boolean[] = [];
     const toggleAlertsBanner = () => {
 
@@ -16,7 +12,7 @@ export default function Header({
 
     return (
         <header className="fixed z-20 w-screen h-0 flex flex-row justify-center">
-            <HeaderLogo authUserId={authUserId} />
+            <HeaderLogo />
             <div className="flex flex-col -z-10">
                 {alerts.length != 0 &&
                     <Skeleton className="bg-transparent pt-10 md:pt-8 px-2 md:px-8">

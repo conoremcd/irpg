@@ -49,7 +49,7 @@ export default function AddStoryForm({ onAddStory }: { onAddStory: Function }) {
         }
     });
 
-    function onSubmit(values: z.infer<typeof AddStoryFormSchema>) {
+    function onSubmit(values: AddStoryFormSchemaType) {
         // TODO: supabase API call to add new story to database
         const newStory: Story = {
             id: uuidv4(),
