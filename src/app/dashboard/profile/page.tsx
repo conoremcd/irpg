@@ -1,11 +1,12 @@
 import SignoutForm from "@/components/ui/custom/main/signout-form";
 import UserProfile from "@/components/ui/custom/main/user-profile";
+import Account from "@/components/ui/custom/profile/account";
 import AccountForm from "@/components/ui/custom/profile/account-form";
 import { Card, CardHeader, CardTitle } from "@/components/ui/shadcn/card";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function Profile() {
+export default async function ProfilePage() {
     const supabase = await createClient();
     const {
         data: { user },
@@ -15,6 +16,6 @@ export default async function Profile() {
     if (error) redirect("/error");
 
     return (
-        <AccountForm user={user} />
+        <Account user={user} />
     );
 }
