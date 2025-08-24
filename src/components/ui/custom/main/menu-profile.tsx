@@ -55,9 +55,9 @@ export default function MenuProfile({
 
     return (
         <Button variant="ghost" onClick={toggleSidebar} asChild>
-            <Link className="size-18 z-40" href={profileLink.url}>
+            <Link className="size-18 z-40 self-end" href={profileLink.url}>
                 {!isLoading &&
-                    <UserProfile avatar_url={avatar_url} isLoading={isLoading} />
+                    <UserProfile className="hover:border-4 hover:border-background" avatar_url={avatar_url} isLoading={isLoading} />
                 }
             </Link>
         </Button>

@@ -23,7 +23,7 @@ export default function UserProfile({
 
     return (
         <Avatar className={cn(
-            "size-18 hover:border-4 hover:border-background rounded-full",
+            "size-18 rounded-full",
             className,
         )} >
             {!isLoading &&

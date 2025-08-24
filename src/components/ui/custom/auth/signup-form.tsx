@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/shadcn/input";
 import { Button } from "@/components/ui/shadcn/button";
 
 // icons
-import { Eye, EyeClosed, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 // schemas
 import {

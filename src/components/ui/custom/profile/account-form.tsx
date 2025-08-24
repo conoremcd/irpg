@@ -41,8 +41,9 @@ export default function AccountForm({ user }: { user: User | null }) {
     const accountForm = useForm<AccountFormSchemaType>({
         resolver: zodResolver(AccountFormSchema),
         defaultValues: {
-            username: username,
-            full_name: full_name,
+            username: username || "",
+            full_name: full_name || "",
+            avatar: undefined,
             updated_at: new Date().toISOString(),
         }
     });
@@ -59,13 +60,14 @@ export default function AccountForm({ user }: { user: User | null }) {
 
             if (error && status !== 406) {
                 console.log(error);
-                throw error
-            }
+                throw error;
 
-            if (data) {
+            } else if (data) {
                 setFullname(data.full_name);
                 setUsername(data.username);
                 setAvatarUrl(data.avatar_url);
+                console.log(data);
+
             }
         } catch (error) {
             alert('Error loading user data!');
@@ -75,53 +77,63 @@ export default function AccountForm({ user }: { user: User | null }) {
     }, [user, supabase]);
 
     useEffect(() => {
-        getProfile()
-    }, [user, getProfile]);
+        getProfile();
+        accountForm.reset({
+            username: username,
+            full_name: full_name,
+            avatar: undefined,
+            updated_at: new Date().toISOString(),
+        });
+    }, [user, full_name, username, getProfile]);
 
-    async function updateProfile({
-        username,
-        full_name,
-        avatar_url,
-    }: {
-        username?: string | undefined
-        full_name?: string | undefined
-        avatar_url?: string | undefined
-    }) {
+    async function onSubmit(values: AccountFormSchemaType) {
         try {
             setLoading(true);
 
             const { error } = await supabase.from('profiles').upsert({
                 id: user?.id as string,
                 email: user?.email,
-                full_name,
-                username,
-                avatar_url,
+                username: values.username,
+                full_name: values.full_name,
+                avatar_url: avatar_url,
                 updated_at: new Date().toISOString(),
             });
-            if (error) throw error
+
+            if (error) throw error;
+
             alert('Profile updated!');
         } catch (error) {
             alert('Error updating the data!');
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
         try {
             setUploading(true);
 
             if (event.target.files && event.target.files.length > 0) {
+                const file: File = event.target.files[0];
+                const bucketID: string = 'profile-avatars';
+                const filePath: string = `${user?.id}/${file.name}`;
+                const { data: upload, error: uploadError } = await supabase.storage
+                    .from(bucketID)
+                    .upload(filePath, file, {
+                        upsert: true,
+                    });
+                const { data: url } = supabase.storage
+                    .from(bucketID)
+                    .getPublicUrl(filePath);
 
-                const file = event.target.files[0]
-                const fileExt = file.name.split('.').pop()
-                const filePath = `${user?.id}-${Math.random()}.${fileExt}`
-                const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
                 if (uploadError) {
-                    throw uploadError
-                }
+                    throw uploadError;
+                } else {
+                    console.log(upload);
+                    console.log(url.publicUrl);
 
-                setAvatarUrl(filePath);
+                    setAvatarUrl(url.publicUrl);
+                }
             }
         } catch {
             alert('Error uploading avatar image!');
@@ -133,43 +145,53 @@ export default function AccountForm({ user }: { user: User | null }) {
     return (
         <Card className="flex flex-col gap-4 p-4 border-background shadow-2xl shadow-primary">
             <CardHeader className="flex flex-col md:flex-row gap-4 justify-center items-center relative pt-16">
-                <UserProfile className="absolute md:-left-8 -top-14 size-28" avatar_url={avatar_url} isLoading={loading} />
+                <UserProfile className="absolute md:-left-8 -top-12 size-28" avatar_url={avatar_url} isLoading={loading} />
                 <CardTitle className="text-2xl md:self-end">{username || "User Profile"}</CardTitle>
             </CardHeader>
             <Form {...accountForm}>
-                <form onSubmit={accountForm.handleSubmit(() => updateProfile({ username, full_name, avatar_url }))} className="flex flex-col gap-4">
+                <form onSubmit={accountForm.handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
                     {/* ... */}
 
-                    <FormField control={accountForm.control} name="avatar" render={({ field }) => (
+                    <FormField control={accountForm.control} name="avatar" render={({ field: { onChange, } }) => (
                         <FormItem>
                             <FormLabel>Avatar Image</FormLabel>
                             <FormControl>
                                 <Input
                                     type="file"
                                     accept="image/*"
+                                    disabled={uploading}
                                     onChange={(e) => {
-                                        field.onChange(e);
+                                        onChange(e.target.files?.[0] ?? undefined);
                                         uploadAvatar(e);
-                                    }} />
+                                    }}
+                                />
                             </FormControl>
+                            <FormDescription>
+                                {uploading &&
+                                    "uploading..."
+                                }
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
                     />
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="email">Email</Label>
+                    <FormItem>
+                        <FormLabel>Email</FormLabel>
                         <Input
-                            id="email"
                             type="text"
+                            disabled
                             value={user?.email}
-                            disabled />
-                    </div>
+                        />
+                    </FormItem>
                     <FormField control={accountForm.control} name="username" render={({ field }) => (
                         <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                                <Input {...field} onChange={field.onChange} />
+                                <Input
+                                    type="text"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -179,7 +201,10 @@ export default function AccountForm({ user }: { user: User | null }) {
                         <FormItem>
                             <FormLabel>Full Name</FormLabel>
                             <FormControl>
-                                <Input {...field} onChange={field.onChange} />
+                                <Input
+                                    type="text"
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

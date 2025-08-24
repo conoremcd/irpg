@@ -1,9 +1,13 @@
 'use server'
 
+// library functions
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+// supabase
 import { createClient } from '@/utils/supabase/server'
+
+// schemas
 import { LoginFormSchemaType, SignUpFormSchemaType } from '@/schemas/auth-schemas'
 
 export async function login(formData: LoginFormSchemaType) {
