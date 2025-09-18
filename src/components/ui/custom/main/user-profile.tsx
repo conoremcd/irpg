@@ -12,11 +12,9 @@ import { cn } from "@/lib/utils";
 import { UserRound } from "lucide-react";
 
 export default function UserProfile({
-    isLoading,
     avatar_url,
     className,
 }: {
-    isLoading: boolean,
     avatar_url?: string | Blob | undefined,
     className?: string,
 }) {
@@ -26,9 +24,7 @@ export default function UserProfile({
             "size-18 rounded-full",
             className,
         )} >
-            {!isLoading &&
-                <AvatarImage className="size-full" src={avatar_url} />
-            }
+            <AvatarImage className="size-full" src={avatar_url} />
             <AvatarFallback className="bg-primary text-primary-foreground p-2">
                 <UserRound className="size-full" />
             </AvatarFallback>

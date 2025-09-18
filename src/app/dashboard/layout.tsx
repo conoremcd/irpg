@@ -23,7 +23,7 @@ export default async function MainLayout({
         <>
           <Header />
           <MainMenu user={user} />
-          <main className="flex flex-col pt-24 items-center h-svh bg-muted">{children}</main>
+          <main className="flex flex-col items-center h-svh bg-muted">{children}</main>
         </>
       }
     </SidebarProvider>

@@ -16,11 +16,8 @@ import {
 import { Input } from "@/components/ui/shadcn/input";
 import { Button } from "@/components/ui/shadcn/button";
 
-// Icons
-import { Ellipsis, Plus, BookOpen } from "lucide-react";
-
 // interfaces
-import Story, { RoleTag } from "@/interfaces/story";
+import { Story, RoleTag } from "@/interfaces/story";
 import { StoryFormSchema, StoryFormSchemaType } from "@/schemas/library-schemas";
 import { Separator } from "@radix-ui/react-separator";
 import { StoryAvatar } from "@/components/ui/custom/library/story-summary";
@@ -31,11 +28,13 @@ import { Textarea } from "@/components/ui/shadcn/textarea";
 
 export default function EditStoryForm({
     story,
+    isEditing,
     onToggleEditMode,
     onUpdateStory
 
 }: {
     story: Story,
+    isEditing: boolean,
     onToggleEditMode: Function,
     onUpdateStory: Function,
 }
@@ -57,9 +56,10 @@ export default function EditStoryForm({
         story.userRole = values.userRole;
         story.overview = values.overview;
         story.progress = values.progress;
-        story.lastUpdated = new Date().toISOString();
+        story.last_updated = new Date().toISOString();
 
         onUpdateStory(story);
+        onToggleEditMode(story);
         console.log(story);
         console.log(values);
     }
@@ -80,64 +80,63 @@ export default function EditStoryForm({
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
-                <div className="flex flex-col md:flex-row w-full md:w-xl gap-4">
-                    <div className="flex flex-col gap-4 items-end">
-                        <StoryAvatar storyID={story.id} avatar={story.avatar} isEditing={story.isEditing}></StoryAvatar>
-                        <FormField
-                            control={form.control}
-                            name="avatar"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col max-w-50">
-                                    <FormLabel>Game Avatar</FormLabel>
-                                    <FormControl>
-                                        <Input type="file" onChange={handleFormChange} accept="image/*" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <div className="grow-4 flex flex-col self-end">
-                        <div className="flex flex-row gap-4">
+                <div className="flex flex-col w-full md:w-xl gap-4">
+                    <div className="flex flex-row w-full md:-xl justify-between">
+                        <div className="flex flex-col gap-4">
+                            <StoryAvatar storyID={story.id} avatar_url={story.avatar_url} isEditing={isEditing}></StoryAvatar>
                             <FormField
                                 control={form.control}
-                                name="title"
+                                name="avatar"
                                 render={({ field }) => (
-                                    <FormItem className="flex flex-col gap-2 grow-2">
-                                        <FormLabel>Title</FormLabel>
+                                    <FormItem className="flex flex-col max-w-50">
+                                        <FormLabel>Game Avatar</FormLabel>
                                         <FormControl>
-                                            <Textarea
-                                                onChange={field.onChange}
-                                                defaultValue={story.title}
-                                            />
+                                            <Input type="file" onChange={handleFormChange} accept="image/*" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="userRole"
-                                render={({ field }) => (
-                                    <FormItem className="flex flex-col gap-2">
-                                        <div className="h-6 w-16 md:w-20 px-2 rounded-md bg-accent self-end text-accent-foreground text-center">{field.value}</div>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="are you the game magus or the player?" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value={RoleTag.GM}>Game Magus</SelectItem>
-                                                <SelectItem value={RoleTag.PLAYER}>Player</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="userRole"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col gap-2 self-end">
+                                    <div className="h-6 w-16 md:w-20 px-2 rounded-md bg-accent text-accent-foreground text-center">{field.value}</div>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="are you the game magus or the player?" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value={RoleTag.GM}>Game Magus</SelectItem>
+                                            <SelectItem value={RoleTag.PLAYER}>Player</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem className="grow-2">
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="a new story"
+                                        onChange={field.onChange}
+                                        defaultValue={field.value}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
                 <Separator className="p-0.25 bg-background" />
                 <div>
@@ -173,6 +172,23 @@ export default function EditStoryForm({
                                         step={5}
                                         onValueChange={(value) => field.onChange(value[0])}
                                     />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+                <div>
+                    <FormField
+                        control={form.control}
+                        name="players"
+                        render={({ field }) => (
+                            <FormItem className="grow-2 flex flex-col gap-4">
+                                <FormLabel>Story Party</FormLabel>
+                                <FormControl>
+                                    {
+
+                                    }
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

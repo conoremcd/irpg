@@ -1,10 +1,10 @@
-import SignoutForm from "@/components/ui/custom/main/signout-form";
-import UserProfile from "@/components/ui/custom/main/user-profile";
+// library components
 import Account from "@/components/ui/custom/profile/account";
-import AccountForm from "@/components/ui/custom/profile/account-form";
-import { Card, CardHeader, CardTitle } from "@/components/ui/shadcn/card";
-import { createClient } from "@/utils/supabase/server";
+import { Accordion, AccordionTrigger, AccordionContent, AccordionItem } from "@/components/ui/shadcn/accordion";
 import { redirect } from "next/navigation";
+
+// supabase
+import { createClient } from "@/utils/supabase/server";
 
 export default async function ProfilePage() {
     const supabase = await createClient();
@@ -16,6 +16,8 @@ export default async function ProfilePage() {
     if (error) redirect("/error");
 
     return (
-        <Account user={user} />
+        <div className="flex flex-col pt-24 pb-20 md:pt-30 md:pb-10 px-4 md:px-8" >
+            <Account user={user} />
+        </div>
     );
 }

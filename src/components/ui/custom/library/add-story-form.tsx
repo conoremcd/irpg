@@ -5,7 +5,6 @@ import React, { useRef } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod"
 import {
     Form,
     FormControl,
@@ -30,7 +29,7 @@ import { Button } from "@/components/ui/shadcn/button";
 import { Ellipsis, Plus, BookOpen } from "lucide-react";
 
 // interfaces
-import Story, { RoleTag } from "@/interfaces/story";
+import { Story, RoleTag } from "@/interfaces/story";
 
 // schemas
 import {
@@ -55,14 +54,11 @@ export default function AddStoryForm({ onAddStory }: { onAddStory: Function }) {
             id: uuidv4(),
             title: values.title,
             overview: "",
-            avatar: undefined,
-            players: [],
+            avatar_url: undefined,
             npcs: [],
             userRole: RoleTag.GM,
             progress: undefined,
-            createdOn: values.createdOn,
-            lastUpdated: values.createdOn,
-            isEditing: false
+            last_updated: new Date().toISOString(),
         }
 
         onAddStory(newStory);

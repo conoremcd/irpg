@@ -1,20 +1,7 @@
 "use client";
 
 // library components 
-import React, { useRef, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod"
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/shadcn/form";
+import React, { useRef, useState, } from "react";
 import {
     Avatar,
     AvatarFallback,
@@ -23,11 +10,10 @@ import {
 import {
     DropdownMenu,
     DropdownMenuGroup,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem
-} from "../../shadcn/dropdown-menu";
+} from "@/components/ui/shadcn/dropdown-menu";
 import {
     Accordion,
     AccordionContent,
@@ -36,59 +22,58 @@ import {
 } from "@/components/ui/shadcn/accordion";
 import {
     Card,
-    CardTitle,
     CardContent,
-    CardHeader,
-    CardFooter
-} from "@/components/ui//shadcn/card";
-import { Input } from "@/components/ui/shadcn/input";
+} from "@/components/ui/shadcn/card";
 import { Button } from "@/components/ui/shadcn/button";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui//shadcn/skeleton";
-import { Label } from "@radix-ui/react-menubar";
+import { Skeleton } from "@/components/ui/shadcn/skeleton";
+import { Label } from "@/components/ui/shadcn/label";
 import { Progress } from "@/components/ui/shadcn/progress";
-import { Separator } from "@/components/ui//shadcn/separator";
+import { Separator } from "@/components/ui/shadcn/separator";
+import { 
+    Tooltip, 
+    TooltipContent, 
+    TooltipTrigger 
+} from "@/components/ui/shadcn/tooltip";
 
 // icons
-import { Ellipsis, Plus, PenBox, BookOpen, ChevronsDownUp } from "lucide-react";
+import { Ellipsis, BookOpen, } from "lucide-react";
 
 // interfaces
-import Story, { RoleTag } from "@/interfaces/story";
+import { Story, RoleTag } from "@/interfaces/story";
 
 // schemas
 import { StoryFormSchema, StoryFormSchemaType } from "@/schemas/library-schemas";
-import EditStoryForm from "./edit-story-form";
+import EditStoryForm from "@/components/ui/custom/library/edit-story-form";
 
-export function StoryAvatar({ storyID, avatar, isEditing }: { storyID: string, avatar?: MediaImage, isEditing: boolean }) {
-    const [avatarSrc, setAvatarSrc] = useState<string | undefined>(avatar?.src);
-    const storyPage = "/library/" + storyID;
+export function StoryAvatar({ storyID, avatar_url, isEditing }: { storyID: string, avatar_url?: string, isEditing: boolean }) {
+    const storyPage = "/dashboard/library/" + storyID;
 
     return (
-        <Button className="-ml-8 -mt-10 size-24 shadow-lg shadow-white hover:border-4 hover:border-background rounded-full" variant="ghost" size="icon" asChild>
-            {isEditing ? (
-                <Avatar asChild>
-                    {avatarSrc ?
-                        <AvatarImage className="">{avatarSrc}</AvatarImage>
-                        :
-                        <AvatarFallback className="bg-primary p-4 hover:border-none">
-                            <BookOpen className="size-full text-primary-foreground" />
-                        </AvatarFallback>
-                    }
-                </Avatar>
-            ) : (
-                <Avatar asChild>
-                    <Link href={storyPage}>
-                        {avatarSrc ?
-                            <AvatarImage className="">{avatarSrc}</AvatarImage>
-                            :
-                            <AvatarFallback className="bg-primary p-4">
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button className="-mt-10 md:-mt-14 md:-ml-10 size-40 shadow-lg shadow-white hover:border-4 hover:border-background rounded-full" variant="ghost" size="icon" asChild>
+                    {isEditing ? (
+                        <Avatar>
+                            <AvatarImage className="" src={avatar_url}></AvatarImage>
+                            <AvatarFallback className="bg-primary hover:border-none">
                                 <BookOpen className="size-full text-primary-foreground" />
                             </AvatarFallback>
-                        }
-                    </Link>
-                </Avatar>
-            )}
-        </Button>
+                        </Avatar>
+                    ) : (
+                        <Avatar asChild>
+                            <Link className="" href={storyPage}>
+                                <AvatarImage className="" src={avatar_url}></AvatarImage>
+                                <AvatarFallback className="bg-primary p-4">
+                                    <BookOpen className="size-full text-primary-foreground" />
+                                </AvatarFallback>
+                            </Link>
+                        </Avatar>
+                    )}
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>Launch Game</TooltipContent>
+        </Tooltip>
     );
 }
 
@@ -96,16 +81,15 @@ export default function StorySummary(
     {
         onUpdateStory,
         onDeleteStory,
-        onToggleEditMode,
         story,
     }: {
         onUpdateStory: Function,
         onDeleteStory: Function,
-        onToggleEditMode: Function,
         story: Story,
     }
 ) {
     const targetRef = useRef<HTMLDivElement>(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     const scrollToContent = () => {
         setTimeout(() => {
@@ -115,8 +99,8 @@ export default function StorySummary(
         }, 200)
     };
 
-    function onEdit() {
-        onToggleEditMode(story);
+    function onToggleEditMode() {
+        setIsEditing(!isEditing);
     }
 
     function onDelete() {
@@ -128,10 +112,11 @@ export default function StorySummary(
         <AccordionItem className="border-none snap-start snap-always" key={story.id} value={story.title}>
             <Card ref={targetRef} className="story-card">
                 <CardContent className="flex flex-col gap-2 items-center">
-                    {story.isEditing ? (
+                    {isEditing ? (
                         <>
                             <EditStoryForm
                                 story={story}
+                                isEditing={isEditing}
                                 onToggleEditMode={onToggleEditMode}
                                 onUpdateStory={onUpdateStory}
                             ></EditStoryForm>
@@ -140,12 +125,11 @@ export default function StorySummary(
                     ) : (
                         <>
                             <div className="flex flex-col md:flex-row gap-4 items-center w-full md:w-xl">
-                                <StoryAvatar storyID={story.id} avatar={story.avatar} isEditing={story.isEditing}></StoryAvatar>
+                                <StoryAvatar storyID={story.id} avatar_url={story.avatar_url} isEditing={isEditing}></StoryAvatar>
                                 <div className="grow-4 flex flex-col gap-2">
-                                    <div className="flex flex-rows gap-4">
+                                    <div className="flex flex-rows gap-2 md:gap-4">
                                         <div className="grow-2 text-2xl uppercase">{story.title}</div>
-                                        <div className="h-6 w-16 md:w-20 px-2 rounded-md bg-accent self-end text-accent-foreground text-center">{story.userRole}</div>
-
+                                        <div className="h-6 w-12 md:w-20 px-1 md:px-2 rounded-md bg-accent self-end text-accent-foreground text-center">{story.userRole}</div>
                                     </div>
                                     <Separator className="p-0.25 bg-background" />
                                 </div>
@@ -160,27 +144,26 @@ export default function StorySummary(
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent>
                                             <DropdownMenuGroup>
-                                                <DropdownMenuItem variant='default' onClick={onEdit}>Edit</DropdownMenuItem>
+                                                <DropdownMenuItem variant='default' onClick={onToggleEditMode}>Edit</DropdownMenuItem>
                                                 <DropdownMenuItem variant="destructive" onClick={onDelete}>Delete</DropdownMenuItem>
                                             </DropdownMenuGroup>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
                                 }
-                                {story.overview &&
+                                {story.overview && story.overview?.length > 0 &&
                                     <div className="col-span-4 p-4 flex flex-col items-start bg-background text-foreground rounded-lg">
                                         <Label className="text-lg">Summary</Label>
                                         {story.overview}
                                     </div>
                                 }
-                                <div className="flex flex-row gap-4 items-center justify-end rounded-2xl">
-                                    {/* if story has progress value, display progress bar */}
-                                    {story.progress &&
-                                        <>
-                                            <Progress className="" value={story.progress} />
-                                            <span>{story.progress + "%"}</span>
-                                        </>
-                                    }
-                                </div>
+
+                                {/* if story has progress value, display progress bar */}
+                                {story.progress != undefined && story.progress > 0 &&
+                                    <div className="flex flex-row gap-4 items-center justify-end rounded-2xl">
+                                        <Progress className="" value={story.progress} />
+                                        <span>{story.progress + "%"}</span>
+                                    </div>
+                                }
                                 {/* TODO: add scheduler and player list components */}
                                 <div className="grid grid-cols-1 md:grid-cols-5 grid-rows-3 gap-4">
                                     <Skeleton className="md:col-span-3 row-span-3 p-2 rounded-2xl min-h-80 p-8 bg-background text-center text-primary">Game Schedule</Skeleton>
